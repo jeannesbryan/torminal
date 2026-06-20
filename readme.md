@@ -11,6 +11,7 @@ Torminal CSS is a lightweight, dependency-free CSS framework designed specifical
 
 ### ⚡ FEATURES
 * **Zero JavaScript:** Interactive components (Modals, Tabs, Dropdowns, Accordions) are built entirely using advanced CSS hacks (`:checked`, `:target`).
+* **Mobile & Touch Optimized:** Fully responsive layout for mobile devices featuring touch-friendly navigation, full-width inputs, and anti-zoom scaling, achieved strictly via pure CSS `@media` queries.
 * **Tor & Privacy Optimized:** Prevents browser fingerprinting by utilizing safe system font stacks and explicitly supporting `@media (prefers-reduced-motion: reduce)` for users on strict security settings.
 * **CRT Aesthetic:** Built-in screen flickers, text glowing, and a subtle scanline overlay (`.t-crt`) to mimic vintage monitors.
 * **Responsive Grid:** A lightweight flexbox and grid utility system tailored for minimal layouts.
