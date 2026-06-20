@@ -12,7 +12,7 @@
     --t-red: #ff003c;
     --t-yellow: #ffcc00;
     --t-yellow-dim: #b38f00;
-    /* Peningkatan Font Stack untuk mitigasi Font Fingerprinting di Tor[cite: 4] */
+    /* Peningkatan Font Stack untuk mitigasi Font Fingerprinting di Tor */
     --t-font: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Menlo', 'Consolas', 'Courier New', monospace;
 }
 
@@ -321,4 +321,56 @@ details.t-accordion-native .t-accordion-body { padding: 15px; color: var(--t-gre
         text-shadow: none !important;
         display: none !important;
     }
+}
+
+/* =========================================
+   TORMINAL MOBILE V4 OVERRIDE (ZERO-JS)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Skala Teks Anti-Zoom (Mencegah iOS auto-zoom) */
+    body { font-size: 16px !important; }
+    .fs-small { font-size: 13px !important; }
+
+    /* 2. Optimalisasi Ruang Kanvas */
+    .t-container, .t-container-fluid { padding: 10px !important; }
+    .t-card { padding: 15px !important; }
+
+    /* 3. Tumpuk Input Raksasa ke Bawah (Flexbox Override) */
+    .d-flex.flex-wrap.gap-2.align-items-center { 
+        flex-direction: column !important; 
+        align-items: stretch !important; 
+    }
+    
+    .t-input, .t-select, .t-textarea {
+        width: 100% !important;
+        font-size: 16px !important; 
+        padding: 12px 10px !important; /* Area sentuh diperluas */
+        margin-bottom: 10px !important;
+    }
+
+    /* 4. Tombol Transmisi Lebar Penuh */
+    .t-btn {
+        width: 100% !important;
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+        margin-bottom: 10px !important;
+        justify-content: center;
+    }
+
+    /* 5. Menu Navigasi Antar-Tab (Touch-Friendly) */
+    .d-flex.gap-2.mb-4 {
+        flex-direction: row !important; /* Tetap sejajar */
+        width: 100%;
+    }
+    .d-flex.gap-2.mb-4 > a.t-btn {
+        flex: 1; /* Membelah ruang secara adil (50:50) */
+        margin-bottom: 0 !important;
+        padding: 15px 5px !important; /* Tombol tinggi & empuk untuk jempol */
+        text-align: center;
+    }
+
+    /* 6. Form Password & Submit Eksekusi */
+    form .d-flex.gap-2 { flex-direction: column !important; }
+    form .d-flex.gap-2 .t-input { margin-bottom: 5px !important; }
+    form .d-flex.gap-2 .t-btn { margin-top: 5px !important; }
 }
