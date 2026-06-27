@@ -12,8 +12,16 @@
     --t-red: #ff003c;
     --t-yellow: #ffcc00;
     --t-yellow-dim: #b38f00;
-    /* Peningkatan Font Stack untuk mitigasi Font Fingerprinting di Tor */
-    --t-font: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Menlo', 'Consolas', 'Courier New', monospace;
+    --t-pink: #ff0055;
+    --t-pink-dim: #8f0030;
+    --t-cyan: #00d9ff;
+    --t-cyan-dim: #007a8f;
+    --t-purple: #7d4698;
+    --t-purple-dim: #4a275c;
+    --t-white: #eafff0;
+
+    /* Privacy-first default: no external fonts, no custom font downloads. */
+    --t-font: monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,6 +62,20 @@ body.t-crt::after {
 }
 
 /* --- UTILITIES & ACCESSIBILITY --- */
+
+/* Screen-reader / visually-hidden helper.
+   Useful for checkbox hacks that must remain keyboard-accessible. */
+.t-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
 
 /* Indikator Fokus Keyboard (Penting untuk Tor tanpa JS) */
 :focus-visible {
@@ -140,7 +162,18 @@ body.t-crt::after {
 .t-box-lg { max-width: 850px; }
 
 /* --- CSS-ONLY CHECKBOX TOGGLE HACK --- */
-.t-toggle-checkbox { display: none; }
+/* Keep toggle inputs accessible; display:none breaks keyboard/screen-reader access. */
+.t-toggle-checkbox {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
 
 /* --- NAVBAR MODULE (CSS-Only Toggler) --- */
 .t-navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px dashed var(--t-green-dim); background: var(--bg-surface); margin-bottom: 20px; }
@@ -177,6 +210,12 @@ hr.t-divider { border: 0; border-top: 1px dashed var(--t-green-dim); margin: 20p
 
 .t-btn.danger { color: var(--t-red); border-color: var(--t-red); }
 .t-btn.danger:hover { background: var(--t-red); color: #fff; box-shadow: 0 0 10px var(--t-red); }
+.t-btn.warning { color: var(--t-yellow); border-color: var(--t-yellow-dim); }
+.t-btn.warning:hover { background: var(--t-yellow); color: var(--bg-base); box-shadow: 0 0 10px var(--t-yellow); }
+.t-btn.info { color: var(--t-cyan); border-color: var(--t-cyan-dim); }
+.t-btn.info:hover { background: var(--t-cyan); color: var(--bg-base); box-shadow: 0 0 10px var(--t-cyan); }
+.t-btn.ghost { color: var(--t-green-dim); border-color: var(--t-green-dim); opacity: 0.85; }
+.t-btn.ghost:hover { color: var(--t-green); border-color: var(--t-green); background: rgba(0,255,65,0.08); box-shadow: none; }
 .t-btn-sm { padding: 4px 10px; font-size: 11px; }
 .t-btn-block { display: flex; width: 100%; }
 
@@ -217,10 +256,15 @@ hr.t-divider { border: 0; border-top: 1px dashed var(--t-green-dim); margin: 20p
 .t-badge { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; background: rgba(0, 255, 65, 0.1); color: var(--t-green); border: 1px solid var(--t-green-dim); }
 .t-badge.danger { background: rgba(255, 0, 60, 0.1); color: var(--t-red); border-color: var(--t-red); }
 .t-badge.warning { background: rgba(255, 204, 0, 0.1); color: var(--t-yellow); border-color: var(--t-yellow-dim); }
+.t-badge.info { background: rgba(0, 217, 255, 0.1); color: var(--t-cyan); border-color: var(--t-cyan-dim); }
+.t-badge.private { background: rgba(255, 0, 85, 0.1); color: var(--t-pink); border-color: var(--t-pink-dim); }
+.t-badge.muted { background: rgba(0, 255, 65, 0.04); color: var(--t-green-dim); border-color: var(--t-green-dim); }
 
 .t-alert { padding: 15px; border: 1px solid var(--t-green-dim); background: rgba(0, 255, 65, 0.05); margin-bottom: 15px; font-size: 13px; border-left: 4px solid var(--t-green); }
 .t-alert.warning { border-color: var(--t-yellow-dim); background: rgba(255, 204, 0, 0.05); color: var(--t-yellow); border-left-color: var(--t-yellow); }
 .t-alert.danger { border-color: var(--t-red); background: rgba(255, 0, 60, 0.05); color: var(--t-red); border-left-color: var(--t-red); }
+.t-alert.info { border-color: var(--t-cyan-dim); background: rgba(0, 217, 255, 0.05); color: var(--t-cyan); border-left-color: var(--t-cyan); }
+.t-alert.private { border-color: var(--t-pink-dim); background: rgba(255, 0, 85, 0.05); color: var(--t-pink); border-left-color: var(--t-pink); }
 
 .t-spinner { display: inline-block; font-family: inherit; font-weight: bold; color: var(--t-green); }
 .t-spinner::after { content: "|"; animation: terminal-spin 0.8s infinite step-end; }
@@ -309,6 +353,447 @@ details.t-accordion-native .t-accordion-body { padding: 15px; color: var(--t-gre
 .t-empty-state { padding: 40px 20px; text-align: center; border: 1px dashed var(--t-green-dim); background: rgba(0, 255, 65, 0.02); margin-bottom: 20px; }
 .t-empty-state-icon { font-size: 2rem; color: var(--t-green-dim); margin-bottom: 10px; display: block; opacity: 0.5; font-family: monospace; }
 
+
+/* =========================================
+   TORMINAL V10 REUSABLE APP MODULES
+   -----------------------------------------
+   Shared components for DeadDrop pages:
+   timeline, inbox, radar, profile, install docs.
+   Zero-JS / Tor-Safest friendly.
+   ========================================= */
+
+/* --- Terminal Shell / Command Center --- */
+.t-shell {
+    border: 1px solid var(--t-green-dim);
+    background: rgba(10, 10, 10, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(0,255,65,0.03);
+    margin-bottom: 20px;
+}
+
+.t-shell-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px dashed var(--t-green-dim);
+    background: rgba(0, 255, 65, 0.03);
+    color: var(--t-green-dim);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.t-shell-title {
+    color: var(--t-green);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.t-shell-body { padding: 15px; }
+
+.t-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px dashed var(--t-green-dim);
+    border-bottom: 1px dashed var(--t-green-dim);
+    margin-bottom: 15px;
+}
+
+.t-statusline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px dashed var(--t-green-dim);
+    background: rgba(0,255,65,0.025);
+    color: var(--t-green-dim);
+    padding: 8px 10px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.t-command {
+    display: block;
+    border-left: 3px solid var(--t-green-dim);
+    background: rgba(0,255,65,0.03);
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    color: var(--t-green);
+    overflow-x: auto;
+}
+
+.t-command::before {
+    content: "$ ";
+    color: var(--t-green-dim);
+}
+
+/* --- Timeline / Inbox Post Module --- */
+.t-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.t-post {
+    border: 1px solid var(--t-green-dim);
+    border-left: 3px solid var(--t-green-dim);
+    background: rgba(10, 10, 10, 0.88);
+    padding: 15px;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.t-post:hover {
+    border-left-color: var(--t-green);
+    background: rgba(0,255,65,0.025);
+}
+
+.t-post.local,
+.t-post.local-node {
+    border-left-width: 4px;
+    border-left-color: var(--t-green);
+}
+
+.t-post.private,
+.t-post.inbox {
+    border-left-color: var(--t-pink);
+    background: rgba(255,0,85,0.025);
+}
+
+.t-post.burner {
+    border-color: var(--t-red);
+    border-left-color: var(--t-red);
+    background: rgba(255,0,60,0.035);
+}
+
+.t-post.deleted,
+.t-post.tombstone {
+    opacity: 0.72;
+    border-style: dashed;
+}
+
+.t-post-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--t-green-dim);
+}
+
+.t-post-author {
+    font-weight: bold;
+    color: var(--t-green);
+}
+
+.t-post.private .t-post-author,
+.t-post.inbox .t-post-author {
+    color: var(--t-pink);
+}
+
+.t-post-meta {
+    color: var(--t-green-dim);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.t-post-content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.t-post-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0,255,65,0.22);
+}
+
+.t-thread-quote,
+.t-quote {
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 2px dashed var(--t-green-dim);
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: var(--t-green-dim);
+}
+
+.t-thread-quote.private,
+.t-quote.private {
+    border-left-color: var(--t-pink);
+    color: #ff88aa;
+}
+
+.t-quote-author {
+    display: block;
+    font-weight: bold;
+    color: var(--t-green);
+    margin-bottom: 4px;
+}
+
+.t-quote.private .t-quote-author,
+.t-thread-quote.private .t-quote-author {
+    color: var(--t-pink);
+}
+
+/* Backward-compatible aliases for old inline page CSS. */
+.post-card {
+    border: 1px solid var(--t-green-dim);
+    border-left: 3px solid var(--t-green-dim);
+    background: rgba(10, 10, 10, 0.88);
+    padding: 15px;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+}
+.post-card:hover {
+    border-left-color: var(--t-green);
+    background: rgba(0,255,65,0.025);
+}
+.post-card.local-node {
+    border-left-width: 4px;
+    border-left-color: var(--t-green);
+}
+
+.media-attachment,
+.t-media-attachment {
+    display: block;
+    max-width: 100%;
+    max-height: 420px;
+    border: 1px dashed var(--t-green-dim);
+    margin-top: 10px;
+    object-fit: contain;
+    background: var(--bg-base);
+}
+
+.t-media-attachment:hover,
+.media-attachment:hover {
+    border-color: var(--t-green);
+}
+
+.t-media-frame {
+    border: 1px dashed var(--t-green-dim);
+    background: rgba(0,0,0,0.35);
+    padding: 8px;
+    margin-top: 10px;
+}
+
+.t-media-caption {
+    margin-top: 6px;
+    color: var(--t-green-dim);
+    font-size: 11px;
+}
+
+/* --- Auth / Vault / Lock Screens --- */
+.t-vault-panel,
+.t-lock-panel {
+    margin-top: 12vh;
+    text-align: center;
+    border: 1px dashed var(--t-green-dim);
+    padding: 40px 20px;
+    background: rgba(0,255,65,0.02);
+}
+
+.t-vault-panel.private,
+.t-lock-panel.private {
+    border-color: var(--t-pink);
+    background: rgba(255,0,85,0.02);
+}
+
+.t-vault-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.t-vault-subtitle {
+    color: var(--t-green-dim);
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+/* --- Key/Value, Metrics, Inspector UI --- */
+.t-kv {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.8fr) 2fr;
+    gap: 0;
+    border: 1px dashed var(--t-green-dim);
+    margin-bottom: 15px;
+}
+
+.t-kv dt,
+.t-kv dd {
+    padding: 8px 10px;
+    border-bottom: 1px dashed rgba(0,255,65,0.2);
+}
+
+.t-kv dt {
+    color: var(--t-green-dim);
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.t-kv dd {
+    color: var(--t-green);
+    overflow-wrap: anywhere;
+}
+
+.t-kv dt:last-of-type,
+.t-kv dd:last-of-type {
+    border-bottom: none;
+}
+
+.t-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.t-metric {
+    border: 1px dashed var(--t-green-dim);
+    background: rgba(0,255,65,0.025);
+    padding: 12px;
+}
+
+.t-metric-value {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--t-green);
+    font-weight: bold;
+}
+
+.t-metric-label {
+    display: block;
+    color: var(--t-green-dim);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+/* --- Pagination --- */
+.t-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.t-page-link,
+.t-page-current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 32px;
+    padding: 5px 10px;
+    border: 1px solid var(--t-green-dim);
+    color: var(--t-green-dim);
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.t-page-link:hover,
+.t-page-current {
+    color: var(--t-green);
+    border-color: var(--t-green);
+    background: rgba(0,255,65,0.08);
+}
+
+/* --- Code / Keys / Long Identifiers --- */
+.t-code,
+.t-kbd,
+.t-fingerprint {
+    font-family: var(--t-font);
+    border: 1px solid var(--t-green-dim);
+    background: rgba(0,255,65,0.04);
+    color: var(--t-green);
+}
+
+.t-code {
+    display: block;
+    padding: 10px;
+    overflow-x: auto;
+    white-space: pre;
+    margin-bottom: 15px;
+}
+
+.t-kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 11px;
+}
+
+.t-fingerprint {
+    display: inline-block;
+    padding: 2px 6px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+/* --- Responsive Helpers --- */
+@media (max-width: 768px) {
+    .t-stack-mobile {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .t-toolbar {
+        align-items: stretch;
+    }
+
+    .t-toolbar .t-btn {
+        width: 100%;
+    }
+
+    .t-kv {
+        grid-template-columns: 1fr;
+    }
+
+    .t-kv dt {
+        border-bottom: none;
+        padding-bottom: 2px;
+    }
+
+    .t-kv dd {
+        padding-top: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+
+    .t-container,
+    .t-container-fluid {
+        padding: 12px;
+    }
+
+    .t-card,
+    .t-post,
+    .t-shell-body {
+        padding: 12px;
+    }
+
+    .t-vault-title {
+        font-size: 1.45rem;
+    }
+}
+
 /* --- REDUCED MOTION (Penting untuk Tor / Aksesibilitas) --- */
 @media (prefers-reduced-motion: reduce) {
     *, ::before, ::after {
@@ -321,56 +806,4 @@ details.t-accordion-native .t-accordion-body { padding: 15px; color: var(--t-gre
         text-shadow: none !important;
         display: none !important;
     }
-}
-
-/* =========================================
-   TORMINAL MOBILE V4 OVERRIDE (ZERO-JS)
-   ========================================= */
-@media (max-width: 768px) {
-    /* 1. Skala Teks Anti-Zoom (Mencegah iOS auto-zoom) */
-    body { font-size: 16px !important; }
-    .fs-small { font-size: 13px !important; }
-
-    /* 2. Optimalisasi Ruang Kanvas */
-    .t-container, .t-container-fluid { padding: 10px !important; }
-    .t-card { padding: 15px !important; }
-
-    /* 3. Tumpuk Input Raksasa ke Bawah (Flexbox Override) */
-    .d-flex.flex-wrap.gap-2.align-items-center { 
-        flex-direction: column !important; 
-        align-items: stretch !important; 
-    }
-    
-    .t-input, .t-select, .t-textarea {
-        width: 100% !important;
-        font-size: 16px !important; 
-        padding: 12px 10px !important; /* Area sentuh diperluas */
-        margin-bottom: 10px !important;
-    }
-
-    /* 4. Tombol Transmisi Lebar Penuh */
-    .t-btn {
-        width: 100% !important;
-        padding: 12px 20px !important;
-        font-size: 16px !important;
-        margin-bottom: 10px !important;
-        justify-content: center;
-    }
-
-    /* 5. Menu Navigasi Antar-Tab (Touch-Friendly) */
-    .d-flex.gap-2.mb-4 {
-        flex-direction: row !important; /* Tetap sejajar */
-        width: 100%;
-    }
-    .d-flex.gap-2.mb-4 > a.t-btn {
-        flex: 1; /* Membelah ruang secara adil (50:50) */
-        margin-bottom: 0 !important;
-        padding: 15px 5px !important; /* Tombol tinggi & empuk untuk jempol */
-        text-align: center;
-    }
-
-    /* 6. Form Password & Submit Eksekusi */
-    form .d-flex.gap-2 { flex-direction: column !important; }
-    form .d-flex.gap-2 .t-input { margin-bottom: 5px !important; }
-    form .d-flex.gap-2 .t-btn { margin-top: 5px !important; }
 }
