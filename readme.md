@@ -255,22 +255,6 @@ The `.t-crt` overlay is aesthetic. It can be disabled if readability or performa
 
 ---
 
-## DeadDrop Integration Notes
-
-DeadDrop v10 pages should avoid page-level `<style>` blocks and inline `style="..."` rules. Use Torminal modules instead:
-
-- `post-card` → `.t-post`
-- `media-attachment` → `.t-media-attachment`
-- `thread-quote` → `.t-quote`
-- unlock panels → `.t-lock-panel` / `.t-vault-title` / `.t-lock-form`
-- page navigation → `.t-toolbar`
-- pagination → `.t-pagination`, `.t-page-link`, `.t-page-current`
-- long IDs/onion URLs → `.t-fingerprint`
-
-Backward-compatible aliases such as `.post-card` and `.media-attachment` remain available, but new pages should prefer the `t-*` classes.
-
----
-
 ## Contributing
 
 Torminal welcomes CSS-only components and utility improvements. The rule of thumb remains:
